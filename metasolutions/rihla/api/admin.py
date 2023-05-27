@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Utilizer
-
-admin.site.register(Utilizer)
+from .models import Utilizer,Region,Image,Place,Favorite,Feedback
+modellist=[Utilizer,Region,Image,Place,Favorite,Feedback]
+admin.site.register(modellist)
 
