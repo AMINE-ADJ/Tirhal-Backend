@@ -125,12 +125,12 @@ TIME_ZONE = 'Etc/GMT-1'
 USE_I18N = True
 
 USE_TZ = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:55869",   
-]
+CORS_ALLOW_ALL_ORIGINS= True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:55869",   
+# ]
 #to allow the client to access apis 
-CORS_URLS_REGEX = r"^/api/.*$"
+# CORS_URLS_REGEX = r"^/api/.*$"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
