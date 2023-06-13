@@ -11,4 +11,5 @@ urlpatterns = [
     path('place/<int:id>',views.getPlace,name=''),
     path('favorite/',views.addfavourite,name='to add a place to the favorites'),
     path('myfavorite/<int:id>',views.getfavorite,name='to get favorites of a specific user'),
+    path('feedbacks/<int:id>',views.getfeedbacks,name="get feedbacks from of a place"),
 ]

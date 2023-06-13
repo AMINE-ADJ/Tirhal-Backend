@@ -29,3 +29,13 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model=Favorite
         fields='__all__'
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Feedback
+        fields=('id','idUtilizer','rating','comment','pubdate')
+        depth=1
+class FeedbackSerializerOnadd(serializers.ModelSerializer):
+    class Meta:
+        model=Feedback
+        fields='__all__'

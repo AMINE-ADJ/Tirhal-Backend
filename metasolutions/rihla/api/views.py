@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Utilizer,Place,Region,Image,Favorite
-from .serializers import UtilizerSerializer,RegionSerializer,PlaceSerializer,MiniPlaceSerializer,ImageSerializer,FavoriteSerializer
+from .models import Utilizer,Place,Region,Image,Favorite,Feedback
+from .serializers import UtilizerSerializer,RegionSerializer,PlaceSerializer,MiniPlaceSerializer,ImageSerializer,FavoriteSerializer,FeedbackSerializer,FeedbackSerializerOnadd
 from rest_framework import status
 
 # Create your views here.
@@ -101,4 +101,15 @@ def getfavorite(request,id):
     serializer=PlaceSerializer(placelist,many=True)
     return Response({"data":serializer.data})    
 
-    
+@api_view(["GET"])
+def getfeedbacks(request,id):
+    query=Feedback.objects.filter(idPlace=id)
+    serializer=FeedbackSerializer(query,many=True)
+    return Response({"data":serializer.data,"status":status.HTTP_200_OK})
+
+# @api_view(["POST"])
+# def addfeedback(request):
+#     idplace=int(request.data["idPlace"])
+#     idutilizer=int(request.data["idUtilizer"])
+#     rating=float(request.data["rating"])
+
