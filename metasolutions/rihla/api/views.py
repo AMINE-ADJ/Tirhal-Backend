@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Utilizer,Place,Region,Image,Favorite,Feedback
-from .serializers import UtilizerSerializer,RegionSerializer,PlaceSerializer,MiniPlaceSerializer,ImageSerializer,FavoriteSerializer,FeedbackSerializer,FeedbackSerializerOnadd
+from .models import Utilizer,Place,Region,Image,Favorite,Comment,Rating,Transport,Event
+from .serializers import UtilizerSerializer,RegionSerializer,PlaceSerializer,MiniPlaceSerializer,ImageSerializer,FavoriteSerializer,CommentSerializer,RatingSerializerOnadd,CommentSerializerOnadd,RatingSerializer,TransportSerializer
 from rest_framework import status
 
 # Create your views here.
@@ -66,12 +66,21 @@ def getPlace(request,id):
         placequery=Place.objects.get(id=id)
         if placequery:
             imagequery=Image.objects.filter(idPlace=id)
+            transportquery=Transport.objects.filter(idPlace=id)
+            transportserializer=TransportSerializer(transportquery,many=True)
             imageserializer=ImageSerializer(imagequery,many=True)
             placeserializer=PlaceSerializer(placequery)
-            return Response({'data':placeserializer.data,'image':imageserializer.data,"status":status.HTTP_200_OK})
+            return Response({'data':placeserializer.data,'image':imageserializer.data,'transport':transportserializer.data,"status":status.HTTP_200_OK})
         else: return Response({"data":"not found","status":status.HTTP_404_NOT_FOUND})
     except:
         return Response({"data":"not found","status":status.HTTP_404_NOT_FOUND})
+
+@api_view(["POST"])
+def SearchPlaces(request,id):
+    param=request.data
+    query1=Place.objects.filter(category__icontains=param["category"],theme__icontains=param["theme"],name__icontains=param["name"],idRegion=id)
+    serializer=MiniPlaceSerializer(query1,many=True)
+    return Response({"data":serializer.data,"status":status.HTTP_200_OK})
 
 @api_view(["POST"])
 def addfavourite(request):
@@ -101,15 +110,56 @@ def getfavorite(request,id):
     serializer=PlaceSerializer(placelist,many=True)
     return Response({"data":serializer.data})    
 
+
+
 @api_view(["GET"])
-def getfeedbacks(request,id):
-    query=Feedback.objects.filter(idPlace=id)
-    serializer=FeedbackSerializer(query,many=True)
-    return Response({"data":serializer.data,"status":status.HTTP_200_OK})
+def getcomments(request,id):
+    query=Comment.objects.filter(idPlace=id)
+    serializer=CommentSerializer(query,many=True)
+    query1=Rating.objects.filter(idPlace=id)
+    serializer1=RatingSerializer(query1,many=True)
+    return Response({"data":serializer.data,"rating":serializer1.data,"status":status.HTTP_200_OK})
+
+
+@api_view(["GET"])
+def gettotalrating(request,id):
+    query=Rating.objects.filter(idPlace=id)
+    average=0
+    count=query.count()
+    for element in query:
+        average=element.value+average
+    average=average/count
+    return Response({"data":average,"status":status.HTTP_200_OK})
+
+
 
 # @api_view(["POST"])
-# def addfeedback(request):
-#     idplace=int(request.data["idPlace"])
-#     idutilizer=int(request.data["idUtilizer"])
-#     rating=float(request.data["rating"])
+# def getrating(request,id):
+#     param=request.data
+#     query=Rating.objects.filter(idPlace=id,idUtilizer=int(param["idUtilizer"]))
+#     serializer=RatingSerializer(query,many=True)
+#     return Response({"data":serializer.data,"status":status.HTTP_200_OK})
+
+
+@api_view(["POST"])
+def addcomment(request):
+    # idplace=int(request.data["idPlace"])
+    # idutilizer=int(request.data["idUtilizer"])
+    # Comment=float(request.data["comment"])
+    serializer=CommentSerializerOnadd(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"msg":"comment added successfully","status":status.HTTP_201_CREATED})
+    else: return Response({"msg":"something went wrong","status":status.HTTP_400_BAD_REQUEST})
+
+
+@api_view(["POST"])
+def addrating(request):
+    serializer=RatingSerializerOnadd(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"msg":"rating added successfully","status":status.HTTP_201_CREATED})
+    else: return Response({"msg":"something went wrong","status":status.HTTP_400_BAD_REQUEST})
+
+
 

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -125,12 +126,14 @@ TIME_ZONE = 'Etc/GMT-1'
 USE_I18N = True
 
 USE_TZ = True
-CORS_ALLOW_ALL_ORIGINS= True
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:55869",   
-# ]
-#to allow the client to access apis 
-# CORS_URLS_REGEX = r"^/api/.*$"
+# CORS_ALLOW_ALL_ORIGINS= True
+ALLOWED_HOSTS=['10.0.2.2','.localhost', '127.0.0.1']
+CORS_ALLOWED_ORIGINS = [
+    "http://10.0.2.2:8000",   
+    "http://localhost:3000"
+]
+# to allow the client to access apis 
+CORS_URLS_REGEX = r"^/api/.*$"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 

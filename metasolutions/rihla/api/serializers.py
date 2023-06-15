@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Utilizer,Region,Place,Image,Favorite,Feedback
+from .models import Utilizer,Region,Place,Image,Favorite,Comment,Rating,Transport,Event
 
 class UtilizerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,7 +13,7 @@ class RegionSerializer(serializers.ModelSerializer):
 class MiniPlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model=Place
-        fields=('id','latitude','longitude')
+        fields=('id','name','latitude','longitude')
 
 class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,12 +30,26 @@ class FavoriteSerializer(serializers.ModelSerializer):
         model=Favorite
         fields='__all__'
 
-class FeedbackSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Feedback
-        fields=('id','idUtilizer','rating','comment','pubdate')
+        model=Comment
+        fields=('id','idUtilizer','comment','pubdate')
         depth=1
-class FeedbackSerializerOnadd(serializers.ModelSerializer):
+class CommentSerializerOnadd(serializers.ModelSerializer):
     class Meta:
-        model=Feedback
+        model=Comment
+        fields=("id","idUtilizer","idPlace","comment")
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Rating
+        fields=('id','idUtilizer','value')
+class RatingSerializerOnadd(serializers.ModelSerializer):
+    class Meta:
+        model=Rating
+        fields='__all__'
+
+class TransportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Transport
         fields='__all__'

@@ -36,12 +36,31 @@ class Favorite(models.Model):
     idUtilizer=models.ForeignKey(Utilizer,related_name='favorites', on_delete=models.CASCADE)
     idPlace=models.ForeignKey(Place,on_delete=models.CASCADE)
 
-class Feedback(models.Model):
+class Comment(models.Model):
     idUtilizer=models.ForeignKey(Utilizer, on_delete=models.CASCADE)
-    idPlace=models.ForeignKey(Place,related_name='feedbacks', on_delete=models.CASCADE)
+    idPlace=models.ForeignKey(Place,related_name='comments', on_delete=models.CASCADE)
     pubdate=models.DateTimeField(default=timezone.now())
     comment=models.TextField(blank=True,null=True,max_length=4064)
-    rating=models.FloatField(null=True,blank=True)
+
+class Rating(models.Model):
+    idUtilizer=models.ForeignKey(Utilizer, on_delete=models.CASCADE)
+    idPlace=models.ForeignKey(Place,related_name='ratings', on_delete=models.CASCADE)
+    value=models.FloatField(null=True,blank=True)
+
+class Transport(models.Model):
+    idPlace=models.ForeignKey(Place,on_delete=models.CASCADE)
+    type=models.CharField(max_length=255)
+    number=models.CharField(max_length=255)
+    placefrom=models.CharField(max_length=255)
+    placeto=models.CharField(max_length=255)
+    distance=models.FloatField(null=True,blank=True)
+
+class Event(models.Model):
+    idRegion=models.ForeignKey(Region,on_delete=models.CASCADE)
+    title=models.CharField(max_length=255)
+    datefrom=models.DateTimeField()
+    dateto=models.DateTimeField()
+    place=models.CharField(max_length=255)
 
 
     
