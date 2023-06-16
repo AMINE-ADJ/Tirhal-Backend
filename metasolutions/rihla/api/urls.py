@@ -16,7 +16,8 @@ urlpatterns = [
     path('search/<int:id>',views.SearchPlaces,name='search places in a region by cat,theme, name'),
     path('addcomment/',views.addcomment,name=''),
     path('addrating/',views.addrating,name=''),
-
+    path('regions/',views.getregions,name='to get all regions'),
+    path('region/<int:code>',views.getregion,name='to get a region by id')
 
 
 ]

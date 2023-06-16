@@ -10,6 +10,10 @@ class RegionSerializer(serializers.ModelSerializer):
     class Meta:
         model=Region
         fields="__all__"
+class MiniRegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Region
+        fields=('id','code')
 class MiniPlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model=Place

@@ -10,6 +10,7 @@ class Utilizer(models.Model):
     #     return self.fullname
     
 class Region(models.Model):
+    code=models.IntegerField(default=60)
     wilaya=models.CharField(max_length=63)
     idUser=models.ForeignKey(Utilizer,on_delete=models.SET_NULL,null=True,blank=True)
     latitude=models.FloatField(null=True,blank=True)

@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Utilizer,Place,Region,Image,Favorite,Comment,Rating,Transport,Event
-from .serializers import UtilizerSerializer,RegionSerializer,PlaceSerializer,MiniPlaceSerializer,ImageSerializer,FavoriteSerializer,CommentSerializer,RatingSerializerOnadd,CommentSerializerOnadd,RatingSerializer,TransportSerializer
+from .serializers import UtilizerSerializer,RegionSerializer,PlaceSerializer,MiniPlaceSerializer,ImageSerializer,FavoriteSerializer,CommentSerializer,RatingSerializerOnadd,CommentSerializerOnadd,RatingSerializer,TransportSerializer,MiniRegionSerializer
 from rest_framework import status
 
 # Create your views here.
@@ -43,11 +43,12 @@ def addregion(request):
     wilaya=request.data["wilaya"]
     latitude=request.data["latitude"]
     longitude=request.data["longitude"]
+    code=request.data["code"]
     try:
         utilizer=Utilizer.objects.get(email=email)
         print(utilizer.id)
         if utilizer :
-            addedregion=Region.objects.create(idUser=utilizer,wilaya=wilaya,latitude=latitude,longitude=longitude)
+            addedregion=Region.objects.create(idUser=utilizer,wilaya=wilaya,latitude=latitude,longitude=longitude,code=code)
         return Response({"msg":"success","status":status.HTTP_201_CREATED})
     except:
         return Response({"msg":"non existing admin","status":status.HTTP_400_BAD_REQUEST})
@@ -161,5 +162,16 @@ def addrating(request):
         return Response({"msg":"rating added successfully","status":status.HTTP_201_CREATED})
     else: return Response({"msg":"something went wrong","status":status.HTTP_400_BAD_REQUEST})
 
+@api_view(["GET"])
+def getregions(request):
+    query=Region.objects.all()
+    serializer=MiniRegionSerializer(query,many=True)
+    return Response({"data":serializer.data,"status":status.HTTP_200_OK})
 
+@api_view(["GET"])
+def getregion(request,code):
+    print(int(code))
+    query=Region.objects.filter(code=int(code))
+    serializer=RegionSerializer(query,many=True)
+    return Response({"data":serializer.data,"status":status.HTTP_200_OK})
 
